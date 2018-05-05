@@ -44,6 +44,8 @@ function init() {
         {
             //图像居中
             initialContentAlignment: go.Spot.Center,
+            //使用鼠标的滚轮进行缩放
+            "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
             //允许双击背景创建新节点
             // "clickCreatingTool.archetypeNodeData": {text: "Node", color: "white"},
             //允许使用Ctrl+G调用groupSelection（）方法创建组
@@ -60,7 +62,8 @@ function init() {
 
     //当文档被修改，添加一个‘*’到网页title，并且让‘保存’按钮生效
     basicDiagram.addDiagramListener("Modified", function (e) {
-        var button = $('#saveBtn');
+        var button = document.getElementById('saveBtn');
+        // var button = $('#saveBtn');
         if (button) button.disabled = !basicDiagram.isModified;
         var idx = document.title.indexOf('*');
         if (basicDiagram.isModified) {

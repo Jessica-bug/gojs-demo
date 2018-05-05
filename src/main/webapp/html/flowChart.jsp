@@ -14,7 +14,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1"><%--页面自适应相关--%>
-    <title>GoJs-demo1</title>
+    <title>flowChart</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="${ctx}/gojs-1.8.17/assets/css/bootstrap.min.css">
     <style>

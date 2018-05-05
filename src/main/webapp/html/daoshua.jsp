@@ -14,13 +14,22 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1"><%--页面自适应相关--%>
-    <title>GoJs-demo1</title>
+    <title>daoshua</title>
     <meta charset="UTF-8">
+    <%--设置页面不缓存--%>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+    <link rel="stylesheet" type="text/css" href="${ctx}/gojs-1.8.17/assets/css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="${ctx}/gojs-1.8.17/assets/css/bootstrap.min.css">
+
     <style>
         .nav,.content{padding: 0;margin: 0}
     </style>
-    <script type="text/javascript" src="${ctx}/jquery-1.11.2.min.js"></script>
+    <%--<script type="text/javascript" src="${ctx}/jquery-1.11.2.min.js"></script>--%>
+    <script type="text/javascript" src="${ctx}/gojs-1.8.17/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${ctx}/gojs-1.8.17/assets/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="${ctx}/gojs-1.8.17/assets/js/bootstrap.min.js"></script>
     <%--<script type="text/javascript" src="${ctx}/gojs-1.8.17/release/go.js"></script>--%>
     <script type="text/javascript" src="${ctx}/gojs-1.8.17/release/go-debug.js"></script>
@@ -32,8 +41,8 @@
     <div class="row">
         <div class="col-sm-2 col-xs-2 nav">
             <b>菜单栏</b>
-            <div id="treeDiagram"
-                 style="width:220px;height:550px;"></div>
+            <div id="treeDiv"
+                 style="width:220px;height:550px; /*background-color: #DAE4E4;*/"></div><%--overflow:auto--%>
         </div>
         <!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
          In this case we also add a background color so we can see that area. -->
@@ -43,8 +52,9 @@
                 <input type="button" value="保存" onclick="save()" id="saveBtn">
                 <input type="button" value="载入" onclick="load()" id="loadBtn">
             </div>
+
             <div class="content" id="basicDiagram"
-                style="width:1030px;height:520px;background-color: #DAE4E4;"></div>
+                style="width:1030px;height:520px;background-color: #ffffff;"></div>
 
             <input type="button" onclick="makeSVG()" value="展示SVG">
             <div id="SvgArea"></div>

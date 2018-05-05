@@ -8,6 +8,7 @@ function init() {
     var $$ = go.GraphObject.make;
     var basicDiagram = $$(go.Diagram, 'basicDiagram',
         {
+            allowDrop:true,
             //图像居中
             initialContentAlignment: go.Spot.Center,
             //允许双击背景创建新节点
@@ -303,9 +304,13 @@ function init() {
      */
     var treeDiagram = $$(go.Diagram, "treeDiagram",
         {
+            //只允许往外拖拽、复制
+            allowDragOut:true,
+            allowCopy: true,
             allowMove: false,
-            allowCopy: false,
+            allowDrop:false,
             allowDelete: false,
+            allowInsert:false,
             allowHorizontalScroll: false,
             layout: $$(go.TreeLayout,
                 {
@@ -353,7 +358,7 @@ function init() {
                 "_buttonStrokeOver": null
             }
         ),
-        $$(go.Panel, "Horizontal",//"Vertical",
+        $$(go.Panel, "Horizontal",
             {position: new go.Point(16, 0)},
             new go.Binding("background", "isSelected", function (s) {
                 return (s ? "lightblue" : "white");
@@ -395,7 +400,7 @@ function init() {
 
     // 创建一个随机树
     var nodeDataArray = [{key: 0}]
-    var max = 200;
+    var max = 25;
     var count = 0;
     while (count < max) {
         count = makeTree(3, count, max, nodeDataArray, nodeDataArray[0]);
@@ -404,7 +409,7 @@ function init() {
 }
 
 function makeTree(level,count,max,nodeDataArray,parentData) {
-    var numchildren=Math.floor(Math.random()*10);
+    var numchildren=Math.floor(Math.random()*5);
     for(var i=0;i<numchildren;i++){
         if(count>=max)return count;
         count++;
@@ -419,9 +424,13 @@ function makeTree(level,count,max,nodeDataArray,parentData) {
 
 function imageConverter(prop,picture) {
     var node=picture.part;
-    if(node.isTreeLeaf){
-        return ctx+"/gojs-1.8.17/samples/images/openFolder.png";
+    // console.log(node)
+    if(!node.isTreeLeaf){
+        if(node.isTreeExpanded)
+            return ctx+"/gojs-1.8.17/samples/images/openFolder.png";
+        else
+            return ctx+"/gojs-1.8.17/samples/images/closedFolder.png";
     }else{
-        return ctx+"/gojs-1.8.17/samples/images/closedFolder.png";
+        return ctx+"/gojs-1.8.17/samples/images/document.png";
     }
 }
