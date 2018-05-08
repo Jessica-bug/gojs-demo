@@ -2,46 +2,48 @@
  * Created by guanyiting on 2018/5/4 0004.
  */
 
-var saveModel={};
+var saveModel = {};
 /*{ "class": "go.GraphLinksModel",
-    "linkFromPortIdProperty": "fromPort",
-    "linkToPortIdProperty": "toPort",
-    "nodeDataArray": [
-        {"category":"Comment", "loc":"360 -10", "text":"Kookie Brittle", "key":-13},
-        {"key":-1, "loc":"175 0", "text":"Start","type":"query"},
-        {"key":0, "loc":"0 77", "text":"Preheat oven to 375 F","type":"table"},
-        {"key":1, "loc":"175 100", "text":"In a bowl, blend: 1 cup margarine, 1.5 teaspoon vanilla, 1 teaspoon salt","type":"model"},
-        {"key":2, "loc":"175 190", "text":"Gradually beat in 1 cup sugar and 2 cups sifted flour","type":"model"},
-        {"key":3, "loc":"175 270", "text":"Mix in 6 oz (1 cup) Nestle's Semi-Sweet Chocolate Morsels","type":"model"},
-        {"key":4, "loc":"175 370", "text":"Press evenly into ungreased 15x10x1 pan","type":"model"},
-        {"key":5, "loc":"352 85", "text":"Finely chop 1/2 cup of your choice of nuts","type":"table"},
-        {"key":6, "loc":"175 440", "text":"Sprinkle nuts on top","type":"touch"},
-        {"key":7, "loc":"175 500", "text":"Bake for 25 minutes and let cool","type":"model"},
-        {"key":8, "loc":"175 570", "text":"Cut into rectangular grid","type":"table"},
-        {"key":-2, "loc":"175 640", "text":"Enjoy!","type":"model"}
-    ],
-    "linkDataArray": [
-        {"from":1, "to":2, "fromPort":"B", "toPort":"T"},
-        {"from":2, "to":3, "fromPort":"B", "toPort":"T"},
-        {"from":3, "to":4, "fromPort":"B", "toPort":"T"},
-        {"from":4, "to":6, "fromPort":"B", "toPort":"T"},
-        {"from":6, "to":7, "fromPort":"B", "toPort":"T"},
-        {"from":7, "to":8, "fromPort":"B", "toPort":"T"},
-        {"from":8, "to":-2, "fromPort":"B", "toPort":"T"},
-        {"from":-1, "to":0, "fromPort":"B", "toPort":"T"},
-        {"from":-1, "to":1, "fromPort":"B", "toPort":"T"},
-        {"from":-1, "to":5, "fromPort":"B", "toPort":"T"},
-        {"from":5, "to":4, "fromPort":"B", "toPort":"T"},
-        {"from":0, "to":4, "fromPort":"B", "toPort":"T"}
-    ]};*/
+ "linkFromPortIdProperty": "fromPort",
+ "linkToPortIdProperty": "toPort",
+ "nodeDataArray": [
+ {"category":"Comment", "loc":"360 -10", "text":"Kookie Brittle", "key":-13},
+ {"key":-1, "loc":"175 0", "text":"Start","type":"query"},
+ {"key":0, "loc":"0 77", "text":"Preheat oven to 375 F","type":"table"},
+ {"key":1, "loc":"175 100", "text":"In a bowl, blend: 1 cup margarine, 1.5 teaspoon vanilla, 1 teaspoon salt","type":"model"},
+ {"key":2, "loc":"175 190", "text":"Gradually beat in 1 cup sugar and 2 cups sifted flour","type":"model"},
+ {"key":3, "loc":"175 270", "text":"Mix in 6 oz (1 cup) Nestle's Semi-Sweet Chocolate Morsels","type":"model"},
+ {"key":4, "loc":"175 370", "text":"Press evenly into ungreased 15x10x1 pan","type":"model"},
+ {"key":5, "loc":"352 85", "text":"Finely chop 1/2 cup of your choice of nuts","type":"table"},
+ {"key":6, "loc":"175 440", "text":"Sprinkle nuts on top","type":"touch"},
+ {"key":7, "loc":"175 500", "text":"Bake for 25 minutes and let cool","type":"model"},
+ {"key":8, "loc":"175 570", "text":"Cut into rectangular grid","type":"table"},
+ {"key":-2, "loc":"175 640", "text":"Enjoy!","type":"model"}
+ ],
+ "linkDataArray": [
+ {"from":1, "to":2, "fromPort":"B", "toPort":"T"},
+ {"from":2, "to":3, "fromPort":"B", "toPort":"T"},
+ {"from":3, "to":4, "fromPort":"B", "toPort":"T"},
+ {"from":4, "to":6, "fromPort":"B", "toPort":"T"},
+ {"from":6, "to":7, "fromPort":"B", "toPort":"T"},
+ {"from":7, "to":8, "fromPort":"B", "toPort":"T"},
+ {"from":8, "to":-2, "fromPort":"B", "toPort":"T"},
+ {"from":-1, "to":0, "fromPort":"B", "toPort":"T"},
+ {"from":-1, "to":1, "fromPort":"B", "toPort":"T"},
+ {"from":-1, "to":5, "fromPort":"B", "toPort":"T"},
+ {"from":5, "to":4, "fromPort":"B", "toPort":"T"},
+ {"from":0, "to":4, "fromPort":"B", "toPort":"T"}
+ ]};*/
 
+var $$;
 var basicDiagram;
+var resultStat=false;
 
 function init() {
     /**
      *  基本图形，basicDiagram
      */
-    var $$ = go.GraphObject.make;
+    $$ = go.GraphObject.make;
     basicDiagram = $$(go.Diagram, 'basicDiagram',
         {
             //图像居中
@@ -77,41 +79,185 @@ function init() {
 
     //node Template的帮助器定义
     /*function nodeStyle() {
-        return [
-            //Node.location的值来自于节点数据的loc属性，由Point.parse静态方法转换
-            //如果Node.location的值发生改变，由Point.stringify静态方法转换回来
-            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-            {
-                //Node.location在每个节点的中心
-                locationSpot: go.Spot.Center,
-                // isShadowed:true,
-                // shadowColor:'#888'
-                //鼠标的enter/leave事件会show/hide端口
-                mouseEnter: function (e, obj) {
-                    showPorts(obj.part, true)
-                },
-                mouseLeave: function (e, obj) {
-                    showPorts(obj.part, false)
-                }
-            }
-        ];
-    }*/
+     return [
+     //Node.location的值来自于节点数据的loc属性，由Point.parse静态方法转换
+     //如果Node.location的值发生改变，由Point.stringify静态方法转换回来
+     new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+     {
+     //Node.location在每个节点的中心
+     locationSpot: go.Spot.Center,
+     // isShadowed:true,
+     // shadowColor:'#888'
+     //鼠标的enter/leave事件会show/hide端口
+     mouseEnter: function (e, obj) {
+     showPorts(obj.part, true)
+     },
+     mouseLeave: function (e, obj) {
+     showPorts(obj.part, false)
+     }
+     }
+     ];
+     }*/
 
     //为规则节点定义Node templates
     var lightText = 'darkblue';//'lightblue';//'whitesmoke';
 
-    basicDiagram.nodeTemplate=$$(go.Node,"Vertical",
-        {locationObjectName:'ICON'},
-        new go.Binding('location','loc',go.Point.parse).makeTwoWay(go.Point.stringify),
+    //一个上下文菜单是一个包含一大堆按钮的饰物（adornment）
+    var partContextMenu = $$(go.Adornment,
+        "Vertical",
+        makeButton("载入技战法",
+            function (e, obj) {//obj就是这个按钮
+                var div = e.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'treeDiv') return;
+
+                var contextmenu = obj.part;//这个按钮在上下文菜单按钮之内
+                var part = contextmenu.adornedPart;//adornedPart就是上下文菜单按钮所修饰的部分:node/link/group
+                //现在可使用Part或其数据或上下文菜单按钮进行操作
+                if (part instanceof go.Node) {
+                    var content = part.data.content;
+                    if (content != '') {
+                        var basicModel = basicDiagram.model.toJson();
+                        basicModel = eval('(' + basicModel + ')');
+                        if (basicModel.nodeDataArray.length != 0) {
+                            if (confirm('当前画布还存在节点，确定载入？')) {
+                                basicDiagram.model = go.Model.fromJson(content);
+                            }
+                        } else {
+                            basicDiagram.model = go.Model.fromJson(content);
+                        }
+                    }
+                }
+                // if(part instanceof go.Link) alert(linkInfo(part.data));
+                // else if(part instanceof go.Group) alert(groupInfo(contextmenu));
+                // else alert(nodeInfo(part.data));
+            },
+            function (o) {//只有节点为历史记录时，此功能菜单可见
+                var div = o.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'treeDiv') return false;
+                else {
+                    var entity = o.data;
+                    return entity.type == 'history' ? true : false;
+                }
+            }
+        ),
+        makeButton('条件查询',
+            function (e, obj) {
+                var div = e.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'basicDiagram') return;
+            },
+            function (o) {
+                var div = o.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'basicDiagram') return false;
+                else {
+                    var entity = o.data;
+                    return entity.type == 'table' ? true : false;
+                }
+            }
+        ),
+        makeButton('参数设置',
+            function (e, obj) {
+                var div = e.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'basicDiagram') return;
+                var contextmenu = obj.part;//这个按钮在上下文菜单按钮之内
+                var part = contextmenu.adornedPart;//adornedPart就是上下文菜单按钮所修饰的部分:node/link/group
+                //现在可使用Part或其数据或上下文菜单按钮进行操作
+                if (part instanceof go.Node) {
+                    var params=eval('('+part.data.params+')');
+                    if(!$.isEmptyObject(params)){//判断参数对象非空
+                        paramSetting(params);
+                    }else{
+                        // window.toastr.info('该模型没有可变参数')
+                        window.toastr['info']("该模型没有可变参数", "提示");
+                    }
+                }
+            },
+            function (o) {
+                var div = o.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'basicDiagram') return false;
+                else {
+                    var entity = o.data;
+                    return entity.type == 'model' ? true : false;
+                }
+            }
+        ),
+        makeButton('设置碰撞条件',
+            function (e, obj) {
+                var div = e.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'basicDiagram') return;
+            },
+            function (o) {
+                var div = o.diagram.Ub.id;//获取当前Diagram所在div的id
+                if (div != 'basicDiagram') return false;
+                else {
+                    var entity = o.data;
+                    return entity.type == 'touch' ? true : false;
+                }
+            }
+        ),
+        makeButton("删除",
+            function (e, obj) {
+                var div = e.diagram.Ub.id;//获取当前Diagram所在div的id
+                var contextmenu = obj.part;//这个按钮在上下文菜单按钮之内
+                var part = contextmenu.adornedPart;//adornedPart就是上下文菜单按钮所修饰的部分:node/link/group
+                //现在可使用Part或其数据或上下文菜单按钮进行操作
+                if (part instanceof go.Node) {
+                    // if(div=='treeDiv'&&part.data.type!='history')
+                    //     return;
+                    e.diagram.commandHandler.deleteSelection();
+                }
+            },
+            function (o) {
+                var div = o.diagram.Ub.id;//获取当前Diagram所在div的id
+                var entity = o.data;
+                if (div != 'basicDiagram' && entity.type != 'history') return false;
+                else {
+                    return o.diagram.commandHandler.canDeleteSelection();
+                }
+            }
+        )
+        /*,
+         makeButton("剪切",
+         function (e,obj) {e.diagram.commandHandler.cutSelection()},//点击触发剪切事件
+         function(o){return o.diagram.commandHandler.canCutSelection()}//根据当前节点是否可剪切确定该按钮是否显示
+         ),
+         makeButton("复制",
+         function (e,obj) {e.diagram.commandHandler.copySelection()},//点击触发复制事件
+         function(o){return o.diagram.commandHandler.canCopySelection()}//根据当前节点是否可复制确定该按钮是否显示
+         ),
+         makeButton("粘贴",
+         function (e,obj) {e.diagram.commandHandler.pasteSelection(e.diagram.lastInput.documentPoint)},
+         function(o){return o.diagram.commandHandler.canPasteSelection()}//根据当前节点是否可粘贴确定该按钮是否显示
+         ),
+         makeButton("撤销",
+         function (e,obj) {e.diagram.commandHandler.undo()},
+         function(o){return o.diagram.commandHandler.canUndo()}
+         ),
+         makeButton("恢复",
+         function (e,obj) {e.diagram.commandHandler.redo()},
+         function(o){return o.diagram.commandHandler.canRedo()}
+         ),
+         makeButton("分组",
+         function (e,obj) {e.diagram.commandHandler.groupSelection()},
+         function(o){return o.diagram.commandHandler.canGroupSelection()}
+         ),
+         makeButton("撤销分组",
+         function (e,obj) {e.diagram.commandHandler.ungroupSelection()},
+         function(o){return o.diagram.commandHandler.canUngroupSelection()}
+         )*/
+    );
+
+    basicDiagram.nodeTemplate = $$(go.Node, "Vertical",
+        {locationObjectName: 'ICON', contextMenu: partContextMenu},
+        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         $$(go.Picture,
             {
                 width: 40, height: 40,
                 margin: new go.Margin(0, 4, 0, 0),
                 imageStretch: go.GraphObject.Uniform,
-                portId:"",cursor:"pointer", //形状是端口，而不是整个节点
+                portId: "", cursor: "pointer", //形状是端口，而不是整个节点
                 fromLinkable: true, toLinkable: true,
             },
-            new go.Binding('source','type',nodeTypeImage)
+            new go.Binding('source', 'type', nodeTypeImage)
         ),
         $$(go.TextBlock,
             {
@@ -128,48 +274,48 @@ function init() {
 
     //替换默认的linkTemplateMap中的Link模板
     /*basicDiagram.linkTemplate = $$(go.Link,//整个Link面板
-        {
-            routing: go.Link.AvoidsNodes,
-            curve: go.Link.JumpOver,
-            corner: 5, toShortLength: 4,
-            relinkableFrom: true,
-            relinkableTo: true,
-            reshapable: true,
-            resegmentable: true,
-            // mouse-overs subtly highlight links:
-            mouseEnter: function (e, link) {
-                link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)";
-            },
-            mouseLeave: function (e, link) {
-                link.findObject("HIGHLIGHT").stroke = "transparent";
-            }
-        },
-        new go.Binding("points").makeTwoWay(),
-        $$(go.Shape,//高亮形状，通常状态透明（transparent）
-            {isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT"}
-        ),
-        $$(go.Shape,//Link路径形状
-            {isPanelMain: true, stroke: "gray", strokeWidth: 2}
-        ),
-        $$(go.Shape,//箭头的形状
-            {toArrow: "standard", stroke: null, fill: "gray"}
-        ),
-        $$(go.Panel, "Auto",
-            {visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5},
-            new go.Binding("visible", "visible").makeTwoWay(),//双向绑定
-            $$(go.Shape, "RoundedRectangle",     //标签形状
-                {fill: "#F8F8F8", stroke: null}),
-            $$(go.TextBlock, "Yes",              //标签
-                {
-                    textAlign: "center",
-                    font: "10pt helvetica, arial, sans-serif",
-                    stroke: "#333333",
-                    editable: true
-                },
-                new go.Binding("text").makeTwoWay()
-            )
-        )
-    );*/
+     {
+     routing: go.Link.AvoidsNodes,
+     curve: go.Link.JumpOver,
+     corner: 5, toShortLength: 4,
+     relinkableFrom: true,
+     relinkableTo: true,
+     reshapable: true,
+     resegmentable: true,
+     // mouse-overs subtly highlight links:
+     mouseEnter: function (e, link) {
+     link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)";
+     },
+     mouseLeave: function (e, link) {
+     link.findObject("HIGHLIGHT").stroke = "transparent";
+     }
+     },
+     new go.Binding("points").makeTwoWay(),
+     $$(go.Shape,//高亮形状，通常状态透明（transparent）
+     {isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT"}
+     ),
+     $$(go.Shape,//Link路径形状
+     {isPanelMain: true, stroke: "gray", strokeWidth: 2}
+     ),
+     $$(go.Shape,//箭头的形状
+     {toArrow: "standard", stroke: null, fill: "gray"}
+     ),
+     $$(go.Panel, "Auto",
+     {visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5},
+     new go.Binding("visible", "visible").makeTwoWay(),//双向绑定
+     $$(go.Shape, "RoundedRectangle",     //标签形状
+     {fill: "#F8F8F8", stroke: null}),
+     $$(go.TextBlock, "Yes",              //标签
+     {
+     textAlign: "center",
+     font: "10pt helvetica, arial, sans-serif",
+     stroke: "#333333",
+     editable: true
+     },
+     new go.Binding("text").makeTwoWay()
+     )
+     )
+     );*/
 
     //当从判断节点出发的节点，link的标签将可见，这个监听方法被‘LinkDrawn’和‘LinkRelinked’DiagramEvents事件触发；
     function showLinkLabel(e) {
@@ -186,33 +332,62 @@ function init() {
     load();
 
     //=============================treeDiagram=================================================
+    //定义节点的行为表现方式
+    //第一步,定义一个对node,link,group 通用的文本菜单
+    //为简化代码我们定义一个方法用于创建文本菜单按钮
+    function makeButton(text, action, visiblePredicate) {
+        return $$("ContextMenuButton",
+            $$(go.TextBlock, text),
+            {click: action},
+            //如果没有visiblePredicate参数，不要绑定GraphObject.visible属性
+            visiblePredicate ? new go.Binding("visible", "", function (o, e) {
+                return o.diagram ? visiblePredicate(o, e) : false;
+            }).ofObject() : {}
+        )
+    }
+
+    //定义节点的表现行为
+    function nodeInfo(d) {//node data对象的提示信息
+        var str = "Node " + d.key + " : " + d.text + "\n";
+        if (d.group) str += "member of " + d.group;
+        else str += "top-level node";
+        return str;
+    }
+
     //初始化页面左边的调色板
     var treeDiagram = $$(go.Diagram, 'treeDiv',
         {
             //只允许往外拖拽、复制
-            allowDragOut:true,
+            allowDragOut: true,
             allowCopy: true,
             allowMove: false,
-            allowDrop:false,
-            allowDelete: false,
-            allowInsert:false,
+            allowDrop: false,
+            // allowDelete: false,
+            allowInsert: false,
             allowHorizontalScroll: false,
-            allowVerticalScroll:false,//不允许纵向滑动
+            allowVerticalScroll: false,//不允许纵向滑动
             scrollsPageOnFocus: false,
+            "commandHandler.deletesTree": false,
             // nodeTemplateMap: basicDiagram.nodeTemplateMap,//共享basicDiagram的nodeTemplateMap
             model: new go.TreeModel([  //指定调色板的内容
-                {type: "open", text: "基础表",key:"A"},    //category：类别
-                {type: "table", text: "表一",key:"B",parent:"A"},    //category：类别
-                {type: "table", text: "表二",key:"C",parent:"A"},
-                {type: "open", text: "筛查工具",key:"D"},
-                {type: "touch",text:"碰撞",key:"E",parent:"D"},
-                {type: "open", text: "基础模型库",key:"F"},    //category：类别,figure: 图形
-                {type: "model", text: "模型一",key:"G",parent:"F"},
-                {type: "model", text: "模型二",key:"H",parent:"F"},
-                {type: "open", text: "历史记录",key:"I"},
-                {type: "history", text: "历史一",key:"J",parent:"I"},
+                {type: "open", text: "基础表", key: "1"},    //category：类别
+                {type: "table", text: "表一", key: "2", parent: "1", tablename: "table1"},    //category：类别
+                {type: "table", text: "表二", key: "3", parent: "1", tablename: "table2"},
+                {type: "open", text: "筛查工具", key: "4"},
+                {type: "touch", text: "碰撞", key: "5", parent: "4", data: ""},
+                {type: "open", text: "基础模型库", key: "6"},    //category：类别,figure: 图形
+                {type: "model", text: "模型一", key: "7", parent: "6", mid: "1356",params:"{}"},//"select * from table1 where jyje>10000"},
+                {type: "model", text: "模型二", key: "8", parent: "6", mid: "1357",params:"{}"},//"select cxkh from table2 group by cxkh "},
+                {type: "open", text: "历史记录", key: "9"},
+                {
+                    type: "history",
+                    text: "历史一",
+                    key: "10",
+                    parent: "9",
+                    content: "{ \"class\": \"go.GraphLinksModel\",\"nodeDataArray\": [{\"type\":\"table\", \"text\":\"表一\", \"key\":\"2\", \"parent\":\"1\", \"tablename\":\"table1\", \"loc\":\"-408.5520935058594 -244\"},{\"type\":\"model\", \"text\":\"模型一\", \"key\":\"7\", \"parent\":\"6\", \"mid\":\"1356\", \"params\":\"{}\",\"loc\":\"-274.5520935058594 -230\"}], \"linkDataArray\": [ {\"from\":\"2\", \"to\":\"7\"} ]}"
+                }
             ]),
-            layout:$$(go.TreeLayout,
+            layout: $$(go.TreeLayout,
                 {
                     alignment: go.TreeLayout.AlignmentStart,
                     angle: 0,
@@ -229,7 +404,7 @@ function init() {
         }
     );
 
-    treeDiagram.nodeTemplate=$$(go.Node,
+    treeDiagram.nodeTemplate = $$(go.Node,
         {
             //no Adornment:通过Node.isSelected改变panel的背景色
             selectionAdorned: false,
@@ -277,11 +452,23 @@ function init() {
                 {font: '9pt Verdana, sans-serif'},
                 new go.Binding("text"
                     /*, "key", function (s) {
-                        return "item " + s;
-                    }*/
+                     return "item " + s;
+                     }*/
                 )
             )
-        )//end Horizontal Panel
+        ),//end Horizontal Panel
+        {
+            //这些提示修饰被所有node共享
+            // toolTip:$$(go.Adornment,"Auto",
+            //     $$(go.Shape,{fill:"#FFFFCC"}),
+            //     //提示信息内容为访问nodeInfo（d）的结果
+            //     $$(go.TextBlock,{margin:4},
+            //         new go.Binding("text","",nodeInfo)
+            //     )
+            // ),
+            //这个上下文菜单修饰被所有node共享
+            contextMenu: partContextMenu
+        }
     );//end Node
 
     //没有line
@@ -303,33 +490,43 @@ function init() {
 }//====结束初始化==================
 
 function imageConverter(propValue, picture) {
-    var node=picture.part;
-    var data=node.data;
+    var node = picture.part;
+    var data = node.data;
     // console.log(node.Ud)//等价于node.data
 
-    if(!node.isTreeLeaf){
-        if(node.isTreeExpanded)
-            return ctx+"/gojs-1.8.17/samples/images/openFolder.png";
+    if (!node.isTreeLeaf) {
+        if (node.isTreeExpanded)
+            return ctx + "/gojs-1.8.17/samples/images/openFolder.png";
         else
-            return ctx+"/gojs-1.8.17/samples/images/closedFolder.png";
-    }else{
+            return ctx + "/gojs-1.8.17/samples/images/closedFolder.png";
+    } else {
         // return ctx+"/gojs-1.8.17/samples/images/document.png";
         return nodeTypeImage(data.type);
     }
 }
 
-function nodeTypeImage(type,picture) {
+function nodeTypeImage(type, picture) {
     switch (type) {
-        case "table": return ctx+"/image/file.png";//gojs-1.8.17/samples/images/voice atm switch.jpg";
-        case "query": return ctx+"/gojs-1.8.17/samples/images/document.png";
-        case "model": return ctx+"/image/database.png";
-        case "touch": return ctx+"/image/toolset.png";
-        case "cancel": return ctx+"/image/cancel.png";
-        case "save": return ctx+"/image/save.png";
-        case "history": return ctx+"/image/files.png";
-        case "open": return ctx+"/gojs-1.8.17/samples/images/openFolder.png";
-        case "close": return ctx+"/image/close.png";
-        default: return ctx+"/gojs-1.8.17/samples/images/pc.jpg";
+        case "table":
+            return ctx + "/image/file.png";//gojs-1.8.17/samples/images/voice atm switch.jpg";
+        case "query":
+            return ctx + "/gojs-1.8.17/samples/images/document.png";
+        case "model":
+            return ctx + "/image/database.png";
+        case "touch":
+            return ctx + "/image/toolset.png";
+        case "cancel":
+            return ctx + "/image/cancel.png";
+        case "save":
+            return ctx + "/image/save.png";
+        case "history":
+            return ctx + "/image/files.png";
+        case "open":
+            return ctx + "/gojs-1.8.17/samples/images/openFolder.png";
+        case "close":
+            return ctx + "/image/close.png";
+        default:
+            return ctx + "/gojs-1.8.17/samples/images/pc.jpg";
     }
     if (type.charAt(0) === "S") return
     if (type.charAt(0) === "P") return "images/general processor.jpg";
@@ -337,33 +534,57 @@ function nodeTypeImage(type,picture) {
         return "images/pc.jpg";
 }
 
+function play() {
+    var runModel=basicDiagram.model.toJson();
+    console.log(runModel)
+
+}
+
 //以JSON格式显示用户可编辑的图表模型
 function save() {
-    saveModel=basicDiagram.model.toJson();
+    saveModel = basicDiagram.model.toJson();
     console.log(saveModel)
-    basicDiagram.isModified=false;
+    basicDiagram.isModified = false;
 }
 
 function load() {
-    basicDiagram.model=go.Model.fromJson(saveModel);
+    basicDiagram.model = go.Model.fromJson(saveModel);
     // console.log(basicDiagram.model)
+}
+
+function emptyDiagram() {
+    var basicModel = basicDiagram.model.toJson();
+    basicModel = eval('(' + basicModel + ')');
+    if (basicModel.nodeDataArray.length != 0) {
+        if (confirm('当前画布还存在节点，确定清空？')) {
+            basicDiagram.model = go.Model.fromJson({});
+        }
+    } else {
+        basicDiagram.model = go.Model.fromJson({});
+    }
+}
+
+function paramSetting() {
+    $("#compare_modal" ).draggable({
+        handle: ".modal-header"
+    });
+    $("#compare_modal").modal("show");
 }
 
 // 在本页末尾添加图的SVG渲染
 var obj;
 function makeSVG() {
-    var svg=basicDiagram.makeSvg({scale:0.5});
-    svg.style.border='1px solid black';
+    var svg = basicDiagram.makeSvg({scale: 0.5});
+    svg.style.border = '1px solid black';
     obj = document.getElementById("SvgArea");
     obj.appendChild(svg);
     // obj=$('#SvgArea');//这里jQuery对象不等同于html对象，所以js对象不能使用html的方法，html对象也不能使用js对象
     // obj.append(svg)    //$('#SvgArea')[0]
 
-    if(obj.children.length>0){
-        obj.replaceChild(svg,obj.children[0]);
+    if (obj.children.length > 0) {
+        obj.replaceChild(svg, obj.children[0]);
     }
 }
-
 
 
 //===============================右键属性菜单=====================================
